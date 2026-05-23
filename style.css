@@ -1,0 +1,445 @@
+/* ============================================================
+   JAMES THOMAS — TASTEFUL MINIMALISM
+   Design Language: Quiet, Elegant, Gallery Brutalism
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: #ffffff;
+  color: #777777; /* Soft, quiet gray for all base text */
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; 
+  position: relative;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #000000;
+}
+
+/* ── 0. LOADER ────────────────────────────────────────────── */
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #ffffff;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  overflow: hidden;
+}
+
+.loader.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-bg-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 2vw;
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 4rem);
+  font-weight: 700;
+  color: #f7f7f7;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  z-index: 0;
+  text-align: justify;
+  overflow: hidden;
+}
+
+.loader-text {
+  position: relative;
+  z-index: 1;
+  font-family: monospace;
+  font-size: clamp(3px, 0.4vw, 8px);
+  line-height: 0.65;
+  letter-spacing: -0.05em;
+  white-space: pre;
+  color: #111111;
+  font-weight: 400;
+}
+
+/* ── 1. LOGO ──────────────────────────────────────────────── */
+.logo {
+  position: absolute;
+  top: 1.5vw;
+  left: 3vw;
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  z-index: 10;
+}
+
+.reg {
+  font-size: 0.5em;
+  vertical-align: super;
+  font-weight: 700;
+  color: #111111;
+  margin-left: 2px;
+}
+
+/* ── 2. CORNER CONTACTS ────────────────────────────────── */
+.top-right {
+  position: absolute;
+  top: 3.5vw; /* Shifted further down to perfectly align with the heavy title plane */
+  right: 3vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #777;
+  z-index: 10;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 1.5vw;
+  right: 1.5vw;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  z-index: 10;
+}
+
+.contact-title {
+  color: #111111;
+  font-weight: 500;
+  font-size: 20px;
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 4px;
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5vw;
+}
+
+.social-btn {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #777777;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-btn:hover {
+  color: #111111;
+}
+
+.corner-email {
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: lowercase;
+  color: #cccccc;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+.corner-email:hover {
+  color: #111111;
+}
+
+/* ── 3. LEFT MARGIN: ABOUT ────────────────────────────────── */
+.left-about {
+  position: absolute;
+  top: 50%;
+  left: 3vw;
+  transform: translateY(-70%); /* Shifted further up to balance with bottom corner ascii art */
+  width: max-content; /* Prevents text from wrapping abruptly */
+  z-index: 10;
+}
+
+.about-heading {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  color: #111111;
+}
+
+.about-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #777777;
+}
+
+.highlight {
+  font-style: italic;
+}
+
+.mt {
+  margin-top: 24px;
+}
+
+.about-ascii {
+  font-family: monospace;
+  font-size: clamp(2px, 0.25vw, 4px);
+  line-height: 0.65;
+  letter-spacing: -0.05em;
+  color: #cccccc;
+  margin-top: 24px;
+  white-space: pre;
+  pointer-events: none;
+  position: absolute;
+  z-index: -1;
+}
+
+/* ── 4. METADATA ──────────────────────────────────────────── */
+.meta-right {
+  position: absolute;
+  top: 50%;
+  right: 3vw;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: #777;
+  z-index: 10;
+}
+
+.meta-item {
+  font-size: 14px;
+  color: #cccccc;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.meta-item.active {
+  color: #111111;
+}
+
+.meta-item:hover {
+  color: #999999;
+}
+
+/* ── 5. CENTER STAGE ──────────────────────────────────────── */
+.center-stage {
+  position: absolute;
+  top: 52.5%; /* Shifted down slightly to visually center the video box itself */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+}
+
+.carousel-wrapper {
+  height: 68vh;
+  display: flex;
+  align-items: flex-start; /* Important for exact transform math */
+  justify-content: center;
+  position: relative;
+}
+
+.carousel-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32vh; /* Pushes adjacent items exactly off-screen */
+  transition: transform 0.3s ease-out;
+}
+
+.carousel-item-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; 
+  justify-content: center;
+  height: 68vh; 
+  width: calc(60vh * (9 / 16)); 
+}
+
+.video-title {
+  font-size: 9px; 
+  font-weight: 500; 
+  color: #111111;
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+  opacity: 0; 
+  transition: opacity 0.3s ease-out;
+}
+
+.video-top-title {
+  margin-bottom: 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 500;
+  color: #111111;
+  align-self: center;
+}
+
+.carousel-item-box {
+  width: 100%;
+  height: 60vh; 
+  background-color: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #999999;
+  border: 1px solid transparent;
+  
+  /* Tastefully muted when inactive */
+  opacity: 0.2; 
+  transition: opacity 0.3s ease-out;
+  cursor: pointer;
+}
+
+/* Active State */
+.carousel-item-wrapper.active .video-title {
+  opacity: 1;
+}
+
+.carousel-item-wrapper.active .carousel-item-box {
+  opacity: 1;
+  background-color: #f9f9f9;
+  color: #111111;
+  border: 1px solid #e0e0e0; 
+}
+
+.video-overlay {
+  display: none;
+}
+
+/* ── 6. BOTTOM MARGINS (SCROLL INDICATOR) ─────────────────── */
+.bottom-center {
+  position: absolute;
+  bottom: 3vw;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: 0.15em;
+}
+
+/* ── 7. CORNER ART ────────────────────────────────────────── */
+.corner-art {
+  position: absolute;
+  bottom: 2.5vw; /* Shifted slightly up from bottom */
+  left: 3vw;
+  font-family: monospace;
+  font-size: clamp(3px, 0.5vw, 8px);
+  line-height: 0.8;
+  letter-spacing: -0.02em;
+  color: #dcdcdc;
+  z-index: 1;
+  pointer-events: none;
+  margin: 0;
+  white-space: pre;
+}
+
+/* ── 8. RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .meta-right { display: none; }
+}
+
+@media (max-width: 768px) {
+  .logo {
+    font-size: 24px;
+    top: 6vw;
+    left: 6vw;
+  }
+  
+  .top-right {
+    top: 6vw;
+    right: 6vw;
+    gap: 8px;
+    align-items: flex-end;
+  }
+  .social-links {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+
+  .left-about {
+    top: auto;
+    bottom: 5vh;
+    left: 6vw;
+    transform: none;
+    width: 60vw;
+  }
+  .about-heading { font-size: 10px; margin-bottom: 4px; }
+  .about-text { font-size: 11px; }
+  .mt { margin-top: 12px; }
+
+  .bottom-right {
+    bottom: 5vh;
+    right: 6vw;
+  }
+  .corner-email {
+    font-size: 12px;
+  }
+
+  .center-stage {
+    top: 48%; /* Push carousel up slightly to give bottom text breathing room */
+  }
+  .carousel-wrapper {
+    height: 60vh;
+  }
+  .carousel-item-wrapper {
+    height: 60vh;
+    width: calc(52vh * (9 / 16)); 
+    align-items: center; /* Center title horizontally under video */
+  }
+  .carousel-item-box {
+    height: 52vh;
+  }
+  .video-top-title {
+    margin-bottom: 10px;
+    font-size: 9px;
+  }
+  .video-title {
+    margin-top: 10px;
+    font-size: 9px;
+  }
+  .carousel-track {
+    gap: 40vh; /* 60vh height + 40vh gap = 100vh total shift. Perfect JS math! */
+  }
+
+  .meta-right, .bottom-center, .corner-art {
+    display: none;
+  }
+}
