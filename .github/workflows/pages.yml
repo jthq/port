@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir -p dist
           cp index.html script.js style.css ascii*.js dist/
+          cp -r vids dist/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
