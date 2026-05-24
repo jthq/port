@@ -16,7 +16,7 @@ const projects = [
     num: "02"
   },
   {
-    brand: "Skit // Gauth AI",
+    brand: "# Skit // Gauth AI",
     type: "Comedic Skit",
     rightMeta: "Voiceover, Video Dev",
     num: "03"
