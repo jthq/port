@@ -18,6 +18,26 @@ body {
   overflow: hidden; 
   position: relative;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+/* Improve text rendering and avoid transform artifacts (Brave/Chromium workarounds) */
+.carousel-track,
+.carousel-item-wrapper,
+.carousel-item-box {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.about-text {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
@@ -602,7 +622,6 @@ a:hover {
 
   .mobile-layout #mobile-about .mobile-about-column .about-text {
     text-align: center;
-    white-space: nowrap;
   }
 
   .mobile-layout .mobile-about-pair {
