@@ -296,35 +296,31 @@ function goToIndex(index, force = false) {
       carouselTrackEl.removeChild(clone);
       carouselTrackEl.style.transition = 'none';
       carouselTrackEl.style.transform = `translateY(0vh)`;
-      setTimeout(() => { isAnimating = false; }, 50); // debounce remainder
-    }, 300);
+        setTimeout(() => { isAnimating = false; }, 500); // Equalize debounce time to match normal scroll
+      }, 300);
 
-  } else if (isWrapBackward) {
-    // Clone last item and prepend to the start for continuous scroll
-    const clone = carouselTrackEl.children[projects.length - 1].cloneNode(true);
-    clone.classList.remove('active');
-    carouselTrackEl.insertBefore(clone, carouselTrackEl.firstChild);
-    
-    // Instantly shift track down so view doesn't jump
-    carouselTrackEl.style.transition = 'none';
-    carouselTrackEl.style.transform = `translateY(-100vh)`;
-    void carouselTrackEl.offsetHeight; // force reflow
-
-    updateClassesAndMeta();
-
-    carouselTrackEl.style.transition = 'transform 0.3s ease-out';
-    carouselTrackEl.style.transform = `translateY(0vh)`;
-
-    setTimeout(() => {
-      carouselTrackEl.removeChild(clone);
+    } else if (isWrapBackward) {
+      // Clone last item and prepend to the start for continuous scroll
+      const clone = carouselTrackEl.children[projects.length - 1].cloneNode(true);
+      clone.classList.remove('active');
+      carouselTrackEl.insertBefore(clone, carouselTrackEl.firstChild);
+      
+      // Instantly shift track down so view doesn't jump
       carouselTrackEl.style.transition = 'none';
-      const realShift = -((projects.length - 1) * 100);
-      carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
-      setTimeout(() => { isAnimating = false; }, 50);
-    }, 300);
+      carouselTrackEl.style.transform = `translateY(-100vh)`;
+      void carouselTrackEl.offsetHeight; // force reflow
 
-  } else {
-    updateClassesAndMeta();
+      updateClassesAndMeta();
+
+      carouselTrackEl.style.transition = 'transform 0.3s ease-out';
+      carouselTrackEl.style.transform = `translateY(0vh)`;
+
+      setTimeout(() => {
+        carouselTrackEl.removeChild(clone);
+        carouselTrackEl.style.transition = 'none';
+        const realShift = -((projects.length - 1) * 100);
+        carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
+        setTimeout(() => { isAnimating = false; }, 500); // Equalize debounce time to match normal scroll
     const shiftAmount = -(currentIndex * 100); 
     carouselTrackEl.style.transition = 'transform 0.3s ease-out';
     carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
@@ -414,6 +410,9 @@ window.addEventListener("wheel", (e) => {
 
   if (isAnimating) return;
   
+  // Trackpad threshold to ignore tiny inertia jitters when lock opens
+  if (Math.abs(e.deltaY) < 20) return;
+
   if (e.deltaY > 0) {
     goToIndex(currentIndex + 1);
   } else if (e.deltaY < 0) {
