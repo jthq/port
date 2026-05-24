@@ -19,6 +19,7 @@ const projects = [
     brand: "# Skit // Gauth AI",
     type: "Comedic Skit",
     rightMeta: "Voiceover, Video Dev",
+    videoSrc: "vids/gauth ad.mp4",
     num: "03"
   },
   {
@@ -39,6 +40,8 @@ let currentIndex = localStorage.getItem('carouselIndex') !== null
   ? parseInt(localStorage.getItem('carouselIndex'), 10) 
   : 0; // Default to the very first brand if never visited before
 let isAnimating = false;
+const activeVideos = {}; // Stores video elements by index
+const videoPlaybackState = new Map();
 
 const carouselTrackEl = document.getElementById("carousel-track");
 const metaRightEl = document.getElementById("meta-right");
@@ -63,14 +66,144 @@ function init() {
 
     const box = document.createElement("div");
     box.className = "carousel-item-box";
-    // Box is intentionally empty to not block future videos
+    let controls = null;
+
+    if (proj.videoSrc) {
+      box.classList.add("video-card");
+
+      const video = document.createElement("video");
+      video.className = "video-player";
+      video.src = proj.videoSrc;
+      video.preload = "metadata";
+      video.playsInline = true;
+      video.controls = false;
+      video.setAttribute("aria-label", proj.brand);
+
+      const playButton = document.createElement("button");
+      playButton.type = "button";
+      playButton.className = "video-play-button";
+      playButton.setAttribute("aria-label", "Play video");
+      playButton.textContent = "- play -";
+
+      // Progress and controls container
+      controls = document.createElement('div');
+      controls.className = 'video-controls';
+
+      const progressTrack = document.createElement('div');
+      progressTrack.className = 'progress-track';
+      const progressFill = document.createElement('div');
+      progressFill.className = 'progress-fill';
+      const progressHandle = document.createElement('div');
+      progressHandle.className = 'progress-handle';
+      progressTrack.appendChild(progressFill);
+      progressTrack.appendChild(progressHandle);
+
+      controls.appendChild(progressTrack);
+
+      activeVideos[idx] = video;
+
+      const syncPlayerState = () => {
+        wrapper.classList.toggle("video-playing", !video.paused);
+
+        if (currentIndex !== idx && !video.paused) {
+          video.pause();
+        }
+      };
+
+      const updateProgressUI = () => {
+        if (!video.duration) return;
+        const pct = (video.currentTime / video.duration) * 100;
+        progressFill.style.width = pct + '%';
+        progressHandle.style.left = pct + '%';
+      };
+
+      video.addEventListener('timeupdate', updateProgressUI);
+      video.addEventListener('loadedmetadata', updateProgressUI);
+
+      const seekToPct = (pct) => {
+        if (!video.duration || !isFinite(video.duration)) return;
+        video.currentTime = Math.max(0, Math.min(1, pct / 100)) * video.duration;
+      };
+
+      progressTrack.addEventListener('click', (ev) => {
+        ev.stopPropagation(); // prevent clicking behind giving playOrPause
+        const rect = progressTrack.getBoundingClientRect();
+        const x = (ev.clientX - rect.left) / rect.width;
+        seekToPct(x * 100);
+      });
+
+      let isDragging = false;
+      const onPointerMove = (ev) => {
+        if (!isDragging) return;
+        ev.preventDefault();
+        const rect = progressTrack.getBoundingClientRect();
+        const clientX = ev.touches ? ev.touches[0].clientX : ev.clientX;
+        const x = (clientX - rect.left) / rect.width;
+        const pct = Math.max(0, Math.min(1, x)) * 100;
+        progressFill.style.width = pct + '%';
+        progressHandle.style.left = pct + '%';
+      };
+
+      const onPointerUp = (ev) => {
+        if (!isDragging) return;
+        isDragging = false;
+        document.removeEventListener('mousemove', onPointerMove);
+        document.removeEventListener('mouseup', onPointerUp);
+        document.removeEventListener('touchmove', onPointerMove);
+        document.removeEventListener('touchend', onPointerUp);
+        const rect = progressTrack.getBoundingClientRect();
+        const clientX = ev.changedTouches ? ev.changedTouches[0].clientX : ev.clientX;
+        const x = (clientX - rect.left) / rect.width;
+        seekToPct(Math.max(0, Math.min(1, x)) * 100);
+      };
+
+      progressHandle.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isDragging = true;
+        document.addEventListener('mousemove', onPointerMove);
+        document.addEventListener('mouseup', onPointerUp);
+      });
+
+      progressHandle.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        isDragging = true;
+        document.addEventListener('touchmove', onPointerMove, {passive:false});
+        document.addEventListener('touchend', onPointerUp);
+      }, {passive:false});
+
+      const playOrPause = async (event) => {
+        event.stopPropagation();
+
+        try {
+          if (video.paused) {
+            await video.play();
+          } else {
+            video.pause();
+          }
+          syncPlayerState();
+        } catch (error) {
+          console.error("Video playback failed:", error);
+        }
+      };
+
+      playButton.addEventListener("click", playOrPause);
+      video.addEventListener("click", playOrPause);
+      video.addEventListener("play", syncPlayerState);
+      video.addEventListener("pause", syncPlayerState);
+
+      box.appendChild(video);
+      box.appendChild(playButton);
+    }
     
     const title = document.createElement("div");
     title.className = "video-title";
-    title.innerHTML = '<span style="color: #bbbbbb; font-weight: 400; text-transform: lowercase;"># example</span>';
+    title.textContent = "";
     
     wrapper.appendChild(topTitle);
     wrapper.appendChild(box);
+    if (controls) wrapper.appendChild(controls);
     wrapper.appendChild(title);
     wrapper.addEventListener("click", () => goToIndex(idx, true));
     carouselTrackEl.appendChild(wrapper);
@@ -127,42 +260,152 @@ function initMobileProjects() {
 function goToIndex(index, force = false) {
   if (isMobileLayout()) return;
 
+  let isWrapForward = false;
+  let isWrapBackward = false;
+
   if (index < 0) {
     index = projects.length - 1;
+    if (currentIndex === 0) isWrapBackward = true;
   } else if (index >= projects.length) {
     index = 0;
+    if (currentIndex === projects.length - 1) isWrapForward = true;
   }
   
   if (index === currentIndex || (!force && isAnimating)) return;
+
+  if (activeVideos[currentIndex]) {
+    saveCurrentVideoState(currentIndex);
+  }
   
   currentIndex = index;
   localStorage.setItem('carouselIndex', currentIndex);
-  updateDOM();
-  
   isAnimating = true;
-  // Strict 800ms lock to debounce trackpad scrolls and enforce one snap per scroll
-  setTimeout(() => {
-    isAnimating = false;
-  }, 800); 
+
+  if (isWrapForward) {
+    // Clone first item and append to the end for continuous scroll
+    const clone = carouselTrackEl.children[0].cloneNode(true);
+    clone.classList.remove('active');
+    carouselTrackEl.appendChild(clone);
+    updateClassesAndMeta();
+
+    const shiftAmount = -(projects.length * 100);
+    carouselTrackEl.style.transition = 'transform 0.3s ease-out';
+    carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
+
+    setTimeout(() => {
+      carouselTrackEl.removeChild(clone);
+      carouselTrackEl.style.transition = 'none';
+      carouselTrackEl.style.transform = `translateY(0vh)`;
+      setTimeout(() => { isAnimating = false; }, 50); // debounce remainder
+    }, 300);
+
+  } else if (isWrapBackward) {
+    // Clone last item and prepend to the start for continuous scroll
+    const clone = carouselTrackEl.children[projects.length - 1].cloneNode(true);
+    clone.classList.remove('active');
+    carouselTrackEl.insertBefore(clone, carouselTrackEl.firstChild);
+    
+    // Instantly shift track down so view doesn't jump
+    carouselTrackEl.style.transition = 'none';
+    carouselTrackEl.style.transform = `translateY(-100vh)`;
+    void carouselTrackEl.offsetHeight; // force reflow
+
+    updateClassesAndMeta();
+
+    carouselTrackEl.style.transition = 'transform 0.3s ease-out';
+    carouselTrackEl.style.transform = `translateY(0vh)`;
+
+    setTimeout(() => {
+      carouselTrackEl.removeChild(clone);
+      carouselTrackEl.style.transition = 'none';
+      const realShift = -((projects.length - 1) * 100);
+      carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
+      setTimeout(() => { isAnimating = false; }, 50);
+    }, 300);
+
+  } else {
+    updateClassesAndMeta();
+    const shiftAmount = -(currentIndex * 100); 
+    carouselTrackEl.style.transition = 'transform 0.3s ease-out';
+    carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
+    setTimeout(() => {
+      isAnimating = false;
+    }, 800); 
+  }
+}
+
+function saveCurrentVideoState(idx) {
+  const vid = activeVideos[idx];
+  if (!vid) return;
+
+  videoPlaybackState.set(idx, vid.currentTime || 0);
+  vid.pause();
+}
+
+function restoreCurrentVideoState(idx) {
+  const vid = activeVideos[idx];
+  if (!vid) return;
+
+  const savedTime = videoPlaybackState.get(idx);
+  if (typeof savedTime !== "number") return;
+
+  const seekToSavedTime = () => {
+    if (Number.isFinite(savedTime)) {
+      try {
+        vid.currentTime = savedTime;
+      } catch (error) {
+        console.error("Video seek failed:", error);
+      }
+    }
+  };
+
+  if (vid.readyState >= 1) {
+    seekToSavedTime();
+  } else {
+    vid.addEventListener("loadedmetadata", seekToSavedTime, { once: true });
+  }
 }
 
 function updateDOM() {
-  if (!carouselTrackEl || !metaRightEl) return;
-
-  // Update Carousel Items
-  Array.from(carouselTrackEl.children).forEach((el, i) => {
-    el.classList.toggle("active", i === currentIndex);
-  });
-
-  // Move Track
-  // Each item is 68vh height + 32vh gap = 100vh total shift
+  // Only called on init
+  updateClassesAndMeta();
+  carouselTrackEl.style.transition = 'none';
   const shiftAmount = -(currentIndex * 100); 
   carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
+  void carouselTrackEl.offsetHeight;
+}
+
+function updateClassesAndMeta() {
+  if (!carouselTrackEl || !metaRightEl) return;
+  // Update Carousel Items
+  // Ignore clones dynamically by only targeting real elements?
+  // We can just iterate the real array since DOM index matches unless we have a clone
+  const children = Array.from(carouselTrackEl.children);
+  const offset = children.length > projects.length && children[0].classList.contains('carousel-item-wrapper') && !children[0].querySelector('.video-player') ? 1 : 0; 
+  // actually, a safer way is to just grab elements by array index
+  // but let's just let it toggle by removing all then setting the one true element.
+  
+  // Actually, a simpler way: the real DOM elements we keep track of, 
+  // but it's okay to just clear all active then set the true index + offset.
+  children.forEach(c => c.classList.remove('active'));
+  let indexToActivate = currentIndex;
+  if (children.length > projects.length) {
+    if (children[0] && children[0].classList.contains('carousel-item-wrapper') && children[0].querySelector('.video-top-title').textContent.includes(projects[projects.length - 1].type)) {
+       indexToActivate += 1;
+    }
+  }
+  if (children[indexToActivate]) {
+    children[indexToActivate].classList.add('active');
+  }
 
   // Update Meta List
   Array.from(metaRightEl.children).forEach((el, i) => {
     el.classList.toggle("active", i === currentIndex);
   });
+
+  if (activeVideos[currentIndex]) {
+    restoreCurrentVideoState(currentIndex);
+  }
 }
 
 // Scroll / Wheel Event handling

@@ -280,10 +280,12 @@ a:hover {
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
+  width: min(62vw, 860px);
 }
 
 .carousel-wrapper {
   height: 68vh;
+  width: 100%;
   display: flex;
   align-items: flex-start; /* Important for exact transform math */
   justify-content: center;
@@ -304,7 +306,17 @@ a:hover {
   align-items: flex-end; 
   justify-content: center;
   height: 68vh; 
-  width: calc(60vh * (9 / 16)); 
+  width: min(100%, 820px);
+  transition: transform 0.35s ease;
+}
+
+.carousel-item-wrapper.video-playing {
+  transform: scale(1.155); /* Expands the whole container by another ~40px */
+  z-index: 5;
+}
+
+.carousel-item-wrapper.video-playing .carousel-item-box {
+  /* Box no longer needs to scale independently */
 }
 
 .video-title {
@@ -342,8 +354,124 @@ a:hover {
   
   /* Tastefully muted when inactive */
   opacity: 0.2; 
-  transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 0.35s ease;
   cursor: pointer;
+}
+
+.carousel-item-box.video-card {
+  position: relative;
+  overflow: visible; /* Changed to visible to let video expand out of it */
+  background: #f2f2f2;
+}
+
+.video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.08) brightness(0.9) blur(0.35px);
+  transition: filter 0.35s ease, transform 0.35s ease, opacity 0.35s ease, width 0.35s ease, height 0.35s ease;
+  opacity: 0.96;
+}
+
+.video-card .video-play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  
+  /* Button sizing */
+  height: 28px;
+  padding: 0 8px;
+  
+  /* Border & background */
+  border: 2.5px solid rgba(255, 255, 255, 0.95);
+  background: transparent;
+  border-radius: 0;
+  
+  /* Typography */
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: lowercase;
+  line-height: 1;
+  color: #ffffff;
+  
+  /* Layout */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Effects */
+  opacity: 0.96;
+  cursor: pointer;
+  transition: opacity 0.18s ease, border-color 0.18s ease;
+}
+
+.video-card .video-play-button:hover {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 1);
+}
+
+/* Minimalist brutalist video controls */
+.video-controls {
+  width: 100%;
+  height: 4px;
+  background: #e0e0e0;
+  margin-top: 10px;
+  z-index: 3;
+  display: block;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  position: relative;
+}
+
+.carousel-item-wrapper.video-playing .video-controls {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.progress-track {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  display: block;
+  position: relative;
+  cursor: pointer;
+}
+
+.progress-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: #111111;
+  width: 0%;
+}
+
+.progress-handle {
+  display: none;
+}
+
+/* Small screens: scale control down a bit */
+@media (max-width: 600px) {
+  .video-controls { height: 3px; }
+}
+
+.carousel-item-wrapper.video-playing .carousel-item-box {
+  /* Box no longer needs to scale independently */
+}
+
+.carousel-item-wrapper.video-playing .video-player {
+  filter: grayscale(0) contrast(1.04) brightness(0.98) blur(0.15px);
+  transform: scale(1);
+  opacity: 1;
+}
+
+.carousel-item-wrapper.video-playing .video-play-button {
+  opacity: 0;
 }
 
 /* Active State */
@@ -365,7 +493,7 @@ a:hover {
 /* ── 6. BOTTOM MARGINS (SCROLL INDICATOR) ─────────────────── */
 .bottom-center {
   position: absolute;
-  bottom: 3vw;
+  bottom: calc(3vw - 10px);
   left: 50%;
   transform: translateX(-50%);
   font-size: 13px;
