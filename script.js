@@ -289,48 +289,48 @@ function goToIndex(index, force = false) {
     updateClassesAndMeta();
 
     const shiftAmount = -(projects.length * 100);
-    carouselTrackEl.style.transition = 'transform 0.3s ease-out';
+    carouselTrackEl.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
     carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
 
     setTimeout(() => {
       carouselTrackEl.removeChild(clone);
       carouselTrackEl.style.transition = 'none';
       carouselTrackEl.style.transform = `translateY(0vh)`;
-        setTimeout(() => { isAnimating = false; }, 500); // Equalize debounce time to match normal scroll
-      }, 300);
+      setTimeout(() => { isAnimating = false; }, 50); 
+    }, 500);
 
-    } else if (isWrapBackward) {
-      // Clone last item and prepend to the start for continuous scroll
-      const clone = carouselTrackEl.children[projects.length - 1].cloneNode(true);
-      clone.classList.remove('active');
-      carouselTrackEl.insertBefore(clone, carouselTrackEl.firstChild);
-      
-      // Instantly shift track down so view doesn't jump
+  } else if (isWrapBackward) {
+    // Clone last item and prepend to the start for continuous scroll
+    const clone = carouselTrackEl.children[projects.length - 1].cloneNode(true);
+    clone.classList.remove('active');
+    carouselTrackEl.insertBefore(clone, carouselTrackEl.firstChild);
+    
+    // Instantly shift track down so view doesn't jump
+    carouselTrackEl.style.transition = 'none';
+    carouselTrackEl.style.transform = `translateY(-100vh)`;
+    void carouselTrackEl.offsetHeight; // force reflow
+
+    updateClassesAndMeta();
+
+    carouselTrackEl.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
+    carouselTrackEl.style.transform = `translateY(0vh)`;
+
+    setTimeout(() => {
+      carouselTrackEl.removeChild(clone);
       carouselTrackEl.style.transition = 'none';
-      carouselTrackEl.style.transform = `translateY(-100vh)`;
-      void carouselTrackEl.offsetHeight; // force reflow
+      const realShift = -((projects.length - 1) * 100);
+      carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
+      setTimeout(() => { isAnimating = false; }, 50); 
+    }, 500);
 
-      updateClassesAndMeta();
-
-      carouselTrackEl.style.transition = 'transform 0.3s ease-out';
-      carouselTrackEl.style.transform = `translateY(0vh)`;
-
-      setTimeout(() => {
-        carouselTrackEl.removeChild(clone);
-        carouselTrackEl.style.transition = 'none';
-        const realShift = -((projects.length - 1) * 100);
-        carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
-        setTimeout(() => { isAnimating = false; }, 500); // Equalize debounce time to match normal scroll
-      }, 300);
-
-    } else {
-      updateClassesAndMeta();
-      const shiftAmount = -(currentIndex * 100); 
-    carouselTrackEl.style.transition = 'transform 0.3s ease-out';
+  } else {
+    updateClassesAndMeta();
+    const shiftAmount = -(currentIndex * 100); 
+    carouselTrackEl.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
     carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
     setTimeout(() => {
       isAnimating = false;
-    }, 800); 
+    }, 550); 
   }
 }
 
