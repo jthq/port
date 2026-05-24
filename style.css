@@ -600,19 +600,19 @@ a:hover {
     width: auto;
   }
 
-  #mobile-about .mobile-about-column .about-text {
+  .mobile-layout #mobile-about .mobile-about-column .about-text {
     text-align: center;
     white-space: nowrap;
   }
 
-  .mobile-about-pair {
+  .mobile-layout .mobile-about-pair {
     display: flex;
     justify-content: center;
     width: 100%;
     margin-top: 8px;
   }
 
-  .mobile-about-column {
+  .mobile-layout .mobile-about-column {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -706,7 +706,7 @@ a:hover {
     text-align: center;
   }
 
-  .about-heading {
+  .mobile-layout .about-heading {
     font-size: 11px;
     margin-bottom: 8px;
     padding-bottom: 5px;
