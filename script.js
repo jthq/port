@@ -224,6 +224,15 @@ function runLoader() {
   const bgText = document.getElementById('loader-bg-text');
   if (!loader || !loaderText) return;
 
+  // Mobile optimization: skip heavy ASCII animation on mobile devices
+  if (typeof isMobileLayout === 'function' && isMobileLayout()) {
+    loader.classList.add('hidden');
+    // Ensure background/loader text cleared to avoid rendering cost
+    if (loaderText) loaderText.textContent = '';
+    if (bgText) bgText.textContent = '';
+    return;
+  }
+
   if (typeof asciiArt === 'undefined') {
     loader.classList.add('hidden');
     return;
