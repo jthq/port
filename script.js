@@ -321,7 +321,11 @@ function goToIndex(index, force = false) {
         const realShift = -((projects.length - 1) * 100);
         carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
         setTimeout(() => { isAnimating = false; }, 500); // Equalize debounce time to match normal scroll
-    const shiftAmount = -(currentIndex * 100); 
+      }, 300);
+
+    } else {
+      updateClassesAndMeta();
+      const shiftAmount = -(currentIndex * 100); 
     carouselTrackEl.style.transition = 'transform 0.3s ease-out';
     carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
     setTimeout(() => {
