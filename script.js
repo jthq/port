@@ -19,7 +19,7 @@ const projects = [
     brand: "# Skit // Gauth AI",
     type: "Comedic Skit",
     rightMeta: "Voiceover, Video Dev",
-    videoSrc: "vids/gauth_ad.mp4",
+    videoSrc: "vids/gauth_ad.mp4?v=2",
     num: "03"
   },
   {
