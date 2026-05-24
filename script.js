@@ -42,6 +42,12 @@ let isAnimating = false;
 
 const carouselTrackEl = document.getElementById("carousel-track");
 const metaRightEl = document.getElementById("meta-right");
+const mobileProjectsListEl = document.getElementById("mobile-projects-list");
+const mobileLayoutQuery = window.matchMedia("(max-width: 768px), (max-aspect-ratio: 3/4)");
+
+function isMobileLayout() {
+  return mobileLayoutQuery.matches;
+}
 
 // Initialize DOM
 function init() {
@@ -80,7 +86,47 @@ function init() {
   updateDOM();
 }
 
+function initMobileProjects() {
+  if (!mobileProjectsListEl) return;
+
+  mobileProjectsListEl.innerHTML = "";
+
+  projects.forEach((proj) => {
+    const projectCard = document.createElement("article");
+    projectCard.className = "mobile-project-card";
+
+    const projectHeader = document.createElement("div");
+    projectHeader.className = "mobile-project-header";
+
+    const projectNum = document.createElement("span");
+    projectNum.className = "mobile-project-num";
+    projectNum.textContent = proj.num;
+
+    const projectBrand = document.createElement("span");
+    projectBrand.className = "mobile-project-brand";
+    projectBrand.textContent = proj.brand;
+
+    projectHeader.appendChild(projectNum);
+    projectHeader.appendChild(projectBrand);
+
+    const projectType = document.createElement("div");
+    projectType.className = "mobile-project-type";
+    projectType.textContent = proj.type;
+
+    const projectMeta = document.createElement("div");
+    projectMeta.className = "mobile-project-meta";
+    projectMeta.textContent = proj.rightMeta;
+
+    projectCard.appendChild(projectHeader);
+    projectCard.appendChild(projectType);
+    projectCard.appendChild(projectMeta);
+    mobileProjectsListEl.appendChild(projectCard);
+  });
+}
+
 function goToIndex(index, force = false) {
+  if (isMobileLayout()) return;
+
   if (index < 0) {
     index = projects.length - 1;
   } else if (index >= projects.length) {
@@ -101,6 +147,8 @@ function goToIndex(index, force = false) {
 }
 
 function updateDOM() {
+  if (!carouselTrackEl || !metaRightEl) return;
+
   // Update Carousel Items
   Array.from(carouselTrackEl.children).forEach((el, i) => {
     el.classList.toggle("active", i === currentIndex);
@@ -119,6 +167,8 @@ function updateDOM() {
 
 // Scroll / Wheel Event handling
 window.addEventListener("wheel", (e) => {
+  if (isMobileLayout()) return;
+
   if (isAnimating) return;
   
   if (e.deltaY > 0) {
@@ -130,6 +180,8 @@ window.addEventListener("wheel", (e) => {
 
 // Arrow Keys
 window.addEventListener("keydown", (e) => {
+  if (isMobileLayout()) return;
+
   if (e.key === "ArrowDown") goToIndex(currentIndex + 1, true);
   if (e.key === "ArrowUp") goToIndex(currentIndex - 1, true);
 });
@@ -139,10 +191,14 @@ let touchStartY = 0;
 let touchEndY = 0;
 
 window.addEventListener("touchstart", (e) => {
+  if (isMobileLayout()) return;
+
   touchStartY = e.changedTouches[0].screenY;
 }, {passive: true});
 
 window.addEventListener("touchend", (e) => {
+  if (isMobileLayout()) return;
+
   touchEndY = e.changedTouches[0].screenY;
   handleSwipe();
 }, {passive: true});
@@ -221,4 +277,5 @@ setInterval(() => {
 document.addEventListener('DOMContentLoaded', () => {
   runLoader();
   init(); // RESTORED init()
+  initMobileProjects();
 });

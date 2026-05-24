@@ -375,71 +375,375 @@ a:hover {
   .meta-right { display: none; }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .logo {
-    font-size: 24px;
-    top: 6vw;
-    left: 6vw;
+    font-size: clamp(34px, 4.2vw, 56px);
+    max-width: 54vw;
   }
-  
+
   .top-right {
-    top: 6vw;
-    right: 6vw;
-    gap: 8px;
-    align-items: flex-end;
+    top: 2.8vw;
+    right: 2.8vw;
+    max-width: 34vw;
   }
+
   .social-links {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.8vw 1.2vw;
   }
 
   .left-about {
-    top: auto;
-    bottom: 5vh;
-    left: 6vw;
-    transform: none;
-    width: 60vw;
+    top: 58%;
+    transform: translateY(-50%);
+    width: min(24vw, 300px);
   }
-  .about-heading { font-size: 10px; margin-bottom: 4px; }
-  .about-text { font-size: 11px; }
-  .mt { margin-top: 12px; }
+
+  .about-text {
+    font-size: 13px;
+  }
+
+  .meta-right {
+    right: 2.8vw;
+  }
 
   .bottom-right {
-    bottom: 5vh;
-    right: 6vw;
+    right: 2.8vw;
+    bottom: 2vw;
   }
+
   .corner-email {
-    font-size: 12px;
+    font-size: 16px;
   }
 
   .center-stage {
-    top: 48%; /* Push carousel up slightly to give bottom text breathing room */
+    top: 50.5%;
   }
-  .carousel-wrapper {
-    height: 60vh;
-  }
-  .carousel-item-wrapper {
-    height: 60vh;
-    width: calc(52vh * (9 / 16)); 
-    align-items: center; /* Center title horizontally under video */
-  }
-  .carousel-item-box {
-    height: 52vh;
-  }
-  .video-top-title {
-    margin-bottom: 10px;
-    font-size: 9px;
-  }
-  .video-title {
-    margin-top: 10px;
-    font-size: 9px;
-  }
-  .carousel-track {
-    gap: 40vh; /* 60vh height + 40vh gap = 100vh total shift. Perfect JS math! */
+}
+
+@media (max-width: 768px) {
+  body {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: auto;
+    min-height: 100svh;
+    background: #ffffff;
   }
 
-  .meta-right, .bottom-center, .corner-art {
+  .logo {
+    display: none;
+  }
+
+  .top-right {
+    display: none;
+  }
+
+  .left-about,
+  .meta-right,
+  .bottom-right,
+  .bottom-center,
+  .corner-art,
+  .center-stage {
+    display: none;
+  }
+
+  .mobile-layout {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    position: relative;
+    padding: 2.5vw 4vw 12vw;
+    min-height: 100svh;
+    gap: 8px;
+  }
+
+  .mobile-appbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    width: min(100%, 560px);
+    margin: 0 auto;
+    padding: 0 0 6px;
+    background: #ffffff;
+  }
+
+  .mobile-app-title {
+    font-size: clamp(30px, 9vw, 46px);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.95;
+    color: #111111;
+    text-align: center;
+  }
+
+  .mobile-app-subtitle {
+    margin-top: 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: #888888;
+    text-align: center;
+  }
+
+  .mobile-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 14px;
+    margin-top: 8px;
+  }
+
+  .mobile-tabs a {
+    display: inline-block;
+    padding: 0 0 2px;
+    border: 0;
+    color: #111111;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    font-weight: 700;
+    background: transparent;
+  }
+
+  .mobile-logo {
+    display: none;
+  }
+
+  .mobile-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: min(100%, 560px);
+    margin: 0 auto;
+  }
+
+  .mobile-intro {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 0 6px;
+  }
+
+  .mobile-contact {
+    font-size: 21px;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .mobile-social-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px 12px;
+    width: 100%;
+  }
+
+  .mobile-social-btn {
+    display: inline-block;
+    padding: 0 0 2px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: #111111;
+    background: transparent;
+    border: 0;
+  }
+
+  .mobile-social-btn:hover,
+  .mobile-tabs a:hover {
+    opacity: 0.7;
+  }
+
+  .mobile-grid {
+    display: grid;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .mobile-card {
+    background: transparent;
+    border: 0;
+    padding: 6px 0 0;
+    text-align: center;
+  }
+
+  #mobile-about {
+    text-align: left;
+  }
+
+  #mobile-about > .about-heading {
+    text-align: center;
+  }
+
+  #mobile-about > .about-text,
+  #mobile-about .mobile-about-column .about-heading,
+  #mobile-about .mobile-about-column .about-text {
+    text-align: left;
+  }
+
+  #mobile-about > .about-text {
+    text-align: center;
+  }
+
+  #mobile-about .mobile-about-column .about-heading {
+    text-align: center;
+    align-self: center;
+    width: auto;
+  }
+
+  #mobile-about .mobile-about-column .about-text {
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .mobile-about-pair {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .mobile-about-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: fit-content;
+    max-width: 100%;
+  }
+
+  .mobile-about-column .about-heading {
+    width: 100%;
+  }
+
+  .mobile-about-column .about-text {
+    width: 100%;
+  }
+
+  .mobile-divider {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    color: #111111;
+    line-height: 1;
+    margin: 2px 0;
+    user-select: none;
+  }
+
+  .mobile-projects-list {
+    display: grid;
+    gap: 6px;
+  }
+
+  .mobile-project-card {
+    padding: 4px 0 8px;
+    text-align: center;
+  }
+
+  .mobile-project-card:first-child {
+    padding-top: 0;
+  }
+
+  .mobile-project-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .mobile-project-num {
+    min-width: 2ch;
+    font-size: 10px;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: 0.12em;
+  }
+
+  .mobile-project-brand {
+    font-size: 16px;
+    font-weight: 700;
+    color: #111111;
+  }
+
+  .mobile-project-type,
+  .mobile-project-meta {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #777777;
+  }
+
+  .mobile-project-type {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    margin-bottom: 4px;
+    color: #111111;
+  }
+
+  .mobile-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 8px 0 0;
+    text-align: center;
+  }
+
+  .mobile-footer .corner-email {
+    text-align: center;
+  }
+
+  .about-heading {
+    font-size: 11px;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    text-align: center;
+    letter-spacing: 0.14em;
+  }
+  .about-text { font-size: 13px; line-height: 1.6; }
+  .mt { margin-top: 12px; }
+
+  .mobile-about-column .mt {
+    margin-top: 0;
+  }
+
+  .corner-email {
+    font-size: 13px;
+    font-weight: 700;
+    color: #111111;
+    letter-spacing: 0.08em;
+  }
+
+  .mobile-layout,
+  .mobile-appbar,
+  .mobile-panel,
+  .mobile-intro,
+  .mobile-grid,
+  .mobile-card,
+  .mobile-about-column,
+  .mobile-footer {
+    box-sizing: border-box;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-layout {
+    display: none;
+  }
+  .mobile-projects-list {
     display: none;
   }
 }
