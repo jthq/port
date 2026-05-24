@@ -362,6 +362,9 @@ a:hover {
   position: relative;
   overflow: visible; /* Changed to visible to let video expand out of it */
   background: #f2f2f2;
+  aspect-ratio: 9 / 16;
+  width: auto;
+  align-self: center;
 }
 
 .video-player {
