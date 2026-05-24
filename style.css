@@ -827,7 +827,7 @@ a:hover {
 
   .mobile-project-type,
   .mobile-project-meta {
-    font-size: 12px;
+    font-size: 14px;
     line-height: 1.5;
     color: #777777;
   }
@@ -854,13 +854,13 @@ a:hover {
   }
 
   .mobile-layout .about-heading {
-    font-size: 11px;
+    font-size: 13px;
     margin-bottom: 8px;
     padding-bottom: 5px;
     text-align: center;
     letter-spacing: 0.14em;
   }
-  .about-text { font-size: 13px; line-height: 1.6; }
+  .about-text { font-size: 15px; line-height: 1.6; }
   .mt { margin-top: 12px; }
 
   .mobile-about-column .mt {
@@ -868,7 +868,7 @@ a:hover {
   }
 
   .corner-email {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 700;
     color: #111111;
     letter-spacing: 0.08em;
