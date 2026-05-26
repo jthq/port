@@ -10,17 +10,11 @@ const projects = [
     num: "01"
   },
   {
-    brand: "# Brand Name 2",
-    type: "AI Study Tool",
+    brand: "# Yap // Quizard",
+    type: "YAPPING VIDEO",
     rightMeta: "Scripting, Production",
+    videoSrc: "vids/Yap Quizard.mp4",
     num: "02"
-  },
-  {
-    brand: "# Skit // Gauth AI",
-    type: "Comedic Skit",
-    rightMeta: "Voiceover, Video Dev",
-    videoSrc: "vids/gauth_ad.mp4?v=2",
-    num: "03"
   },
   {
     brand: "# Brand Name 4",
@@ -33,6 +27,13 @@ const projects = [
     type: "Lifestyle",
     rightMeta: "UGC, Creative Direction",
     num: "05"
+  },
+  {
+    brand: "# Skit // Gauth AI",
+    type: "Comedic Skit",
+    rightMeta: "Voiceover, Video Dev",
+    videoSrc: "vids/gauth_ad.mp4?v=2",
+    num: "06"
   }
 ];
 
@@ -249,6 +250,86 @@ function initMobileProjects() {
     const projectMeta = document.createElement("div");
     projectMeta.className = "mobile-project-meta";
     projectMeta.textContent = proj.rightMeta;
+
+    if (proj.videoSrc) {
+      const mediaFrame = document.createElement("div");
+      mediaFrame.className = "mobile-video-frame";
+
+      const video = document.createElement("video");
+      video.className = "mobile-video-player";
+      video.src = proj.videoSrc;
+      video.preload = "metadata";
+      video.playsInline = true;
+      video.controls = false;
+      video.setAttribute("aria-label", proj.brand);
+
+      const videoButton = document.createElement("button");
+      videoButton.type = "button";
+      videoButton.className = "mobile-video-button";
+      videoButton.textContent = "play";
+      videoButton.setAttribute("aria-label", "Play video");
+
+      const mobileControls = document.createElement("div");
+      mobileControls.className = "mobile-video-controls";
+
+      const mobileProgressTrack = document.createElement("div");
+      mobileProgressTrack.className = "mobile-progress-track";
+      const mobileProgressFill = document.createElement("div");
+      mobileProgressFill.className = "mobile-progress-fill";
+      mobileProgressTrack.appendChild(mobileProgressFill);
+      mobileControls.appendChild(mobileProgressTrack);
+
+      const syncProgress = () => {
+        if (!video.duration) return;
+        const pct = (video.currentTime / video.duration) * 100;
+        mobileProgressFill.style.width = pct + "%";
+      };
+
+      const seekTo = (pct) => {
+        if (!video.duration || !Number.isFinite(video.duration)) return;
+        video.currentTime = Math.max(0, Math.min(1, pct / 100)) * video.duration;
+      };
+
+      const togglePlayback = async (event) => {
+        event.stopPropagation();
+
+        try {
+          if (video.paused) {
+            await video.play();
+          } else {
+            video.pause();
+          }
+        } catch (error) {
+          console.error("Mobile video playback failed:", error);
+        }
+      };
+
+      video.addEventListener("timeupdate", syncProgress);
+      video.addEventListener("loadedmetadata", syncProgress);
+      video.addEventListener("play", () => {
+        projectCard.classList.add("is-playing");
+        videoButton.textContent = "pause";
+      });
+      video.addEventListener("pause", () => {
+        projectCard.classList.remove("is-playing");
+        videoButton.textContent = "play";
+      });
+
+      videoButton.addEventListener("click", togglePlayback);
+      video.addEventListener("click", togglePlayback);
+
+      mobileProgressTrack.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const rect = mobileProgressTrack.getBoundingClientRect();
+        const x = (event.clientX - rect.left) / rect.width;
+        seekTo(x * 100);
+      });
+
+      mediaFrame.appendChild(video);
+      mediaFrame.appendChild(videoButton);
+      projectCard.appendChild(mediaFrame);
+      projectCard.appendChild(mobileControls);
+    }
 
     projectCard.appendChild(projectHeader);
     projectCard.appendChild(projectType);

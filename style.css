@@ -199,22 +199,22 @@ a:hover {
   top: 50%;
   left: 3vw;
   transform: translateY(-70%); /* Shifted further up to balance with bottom corner ascii art */
-  width: max-content; /* Prevents text from wrapping abruptly */
+  width: min(30vw, 360px); /* Gives the about block more breathing room */
   z-index: 10;
 }
 
 .about-heading {
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   color: #111111;
 }
 
 .about-text {
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 17px;
+  line-height: 1.7;
   color: #777777;
 }
 
@@ -223,7 +223,7 @@ a:hover {
 }
 
 .mt {
-  margin-top: 24px;
+  margin-top: 28px;
 }
 
 .about-ascii {
@@ -311,7 +311,7 @@ a:hover {
 }
 
 .carousel-item-wrapper.video-playing {
-  transform: scale(1.155); /* Expands the whole container by another ~40px */
+  transform: scale(1.03); /* Barely lifts the card while playing */
   z-index: 5;
 }
 
@@ -547,11 +547,15 @@ a:hover {
   .left-about {
     top: 58%;
     transform: translateY(-50%);
-    width: min(24vw, 300px);
+    width: min(27vw, 340px);
   }
 
   .about-text {
-    font-size: 13px;
+    font-size: 15px;
+  }
+
+  .about-heading {
+    font-size: 14px;
   }
 
   .meta-right {
@@ -604,9 +608,9 @@ a:hover {
     align-items: flex-start;
     flex-direction: column;
     position: relative;
-    padding: 2.5vw 4vw 12vw;
+    padding: 2vw 4vw 10vw;
     min-height: 100svh;
-    gap: 8px;
+    gap: 6px;
   }
 
   .mobile-appbar {
@@ -620,7 +624,7 @@ a:hover {
   }
 
   .mobile-app-title {
-    font-size: clamp(30px, 9vw, 46px);
+    font-size: clamp(28px, 8vw, 40px);
     font-weight: 800;
     letter-spacing: -0.06em;
     line-height: 0.95;
@@ -630,7 +634,7 @@ a:hover {
 
   .mobile-app-subtitle {
     margin-top: 4px;
-    font-size: 10px;
+    font-size: 9px;
     text-transform: uppercase;
     letter-spacing: 0.18em;
     color: #888888;
@@ -641,7 +645,7 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 10px 14px;
+    gap: 8px 12px;
     margin-top: 8px;
   }
 
@@ -666,8 +670,8 @@ a:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    width: min(100%, 560px);
+    gap: 6px;
+    width: min(100%, 520px);
     margin: 0 auto;
   }
 
@@ -676,13 +680,13 @@ a:hover {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 8px;
+    gap: 6px;
     width: 100%;
-    padding: 10px 0 6px;
+    padding: 8px 0 4px;
   }
 
   .mobile-contact {
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 700;
     color: #111111;
     letter-spacing: 0.12em;
@@ -693,14 +697,14 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 6px 12px;
+    gap: 5px 10px;
     width: 100%;
   }
 
   .mobile-social-btn {
     display: inline-block;
     padding: 0 0 2px;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
@@ -723,8 +727,18 @@ a:hover {
   .mobile-card {
     background: transparent;
     border: 0;
-    padding: 6px 0 0;
+    padding: 4px 0 0;
     text-align: center;
+  }
+
+  .mobile-project-card {
+    width: 100%;
+    padding: 8px 0 12px;
+    border-top: 1px solid #ececec;
+  }
+
+  .mobile-project-card:first-child {
+    border-top: 0;
   }
 
   #mobile-about {
@@ -759,7 +773,7 @@ a:hover {
     display: flex;
     justify-content: center;
     width: 100%;
-    margin-top: 8px;
+    margin-top: 6px;
   }
 
   .mobile-layout .mobile-about-column {
@@ -782,7 +796,7 @@ a:hover {
   .mobile-divider {
     width: 100%;
     text-align: center;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.3em;
     color: #111111;
@@ -793,25 +807,17 @@ a:hover {
 
   .mobile-projects-list {
     display: grid;
-    gap: 6px;
-  }
-
-  .mobile-project-card {
-    padding: 4px 0 8px;
-    text-align: center;
-  }
-
-  .mobile-project-card:first-child {
-    padding-top: 0;
+    gap: 8px;
+    width: 100%;
   }
 
   .mobile-project-header {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 3px;
+    gap: 2px;
     align-items: center;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
 
   .mobile-project-num {
@@ -830,16 +836,83 @@ a:hover {
 
   .mobile-project-type,
   .mobile-project-meta {
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: 13px;
+    line-height: 1.45;
     color: #777777;
   }
 
   .mobile-project-type {
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     color: #111111;
+  }
+
+  .mobile-video-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    margin: 8px 0 8px;
+    background: #f4f4f4;
+    overflow: hidden;
+    border: 1px solid #ececec;
+  }
+
+  .mobile-video-player {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(1) contrast(1.05) brightness(0.95);
+  }
+
+  .mobile-project-card.is-playing .mobile-video-player {
+    filter: grayscale(0) contrast(1.02) brightness(1);
+  }
+
+  .mobile-video-button {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    border: 1px solid rgba(255, 255, 255, 0.95);
+    background: rgba(17, 17, 17, 0.25);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 8px 12px;
+    line-height: 1;
+    min-width: 68px;
+  }
+
+  .mobile-project-card.is-playing .mobile-video-button {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .mobile-video-controls {
+    width: 100%;
+    height: 3px;
+    margin-top: 6px;
+    background: #e7e7e7;
+  }
+
+  .mobile-progress-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+
+  .mobile-progress-fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 0%;
+    background: #111111;
   }
 
   .mobile-footer {
@@ -857,21 +930,21 @@ a:hover {
   }
 
   .mobile-layout .about-heading {
-    font-size: 13px;
-    margin-bottom: 8px;
+    font-size: 12px;
+    margin-bottom: 7px;
     padding-bottom: 5px;
     text-align: center;
     letter-spacing: 0.14em;
   }
-  .about-text { font-size: 15px; line-height: 1.6; }
-  .mt { margin-top: 12px; }
+  .about-text { font-size: 13px; line-height: 1.55; }
+  .mt { margin-top: 10px; }
 
   .mobile-about-column .mt {
     margin-top: 0;
   }
 
   .corner-email {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: 700;
     color: #111111;
     letter-spacing: 0.08em;
