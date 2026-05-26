@@ -258,24 +258,56 @@ function initMobileProjects() {
       const video = document.createElement("video");
       video.className = "mobile-video-player";
       video.src = proj.videoSrc;
-      video.preload = "auto";
-      video.autoplay = true;
+      video.preload = "metadata";
+      video.autoplay = false;
       video.muted = true;
-      video.loop = true;
       video.playsInline = true;
       video.controls = true;
       video.setAttribute("aria-label", proj.brand);
 
-      video.addEventListener("loadedmetadata", () => {
-        if (!video.duration || !Number.isFinite(video.duration)) return;
+      const capturePoster = () => {
+        const duration = video.duration;
+        if (!duration || !Number.isFinite(duration)) return;
 
-        try {
-          video.currentTime = Math.min(0.15, Math.max(0.02, video.duration * 0.01));
-          void video.play();
-        } catch (error) {
-          console.error("Mobile preview setup failed:", error);
+        const posterTime = Math.min(0.15, Math.max(0.02, duration * 0.01));
+        const previousTime = video.currentTime;
+        const restoreFrame = () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth || 720;
+          canvas.height = video.videoHeight || 1280;
+
+          const context = canvas.getContext("2d");
+          if (!context) return;
+
+          try {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            video.poster = canvas.toDataURL("image/jpeg", 0.85);
+            video.currentTime = previousTime || posterTime;
+          } catch (error) {
+            console.error("Mobile poster capture failed:", error);
+          }
+        };
+
+        if (Math.abs(previousTime - posterTime) < 0.01) {
+          restoreFrame();
+          return;
         }
-      });
+
+        const onSeeked = () => {
+          video.removeEventListener("seeked", onSeeked);
+          restoreFrame();
+        };
+
+        video.addEventListener("seeked", onSeeked);
+        try {
+          video.currentTime = posterTime;
+        } catch (error) {
+          video.removeEventListener("seeked", onSeeked);
+          console.error("Mobile poster seek failed:", error);
+        }
+      };
+
+      video.addEventListener("loadeddata", capturePoster);
 
       mediaFrame.appendChild(video);
       projectCard.appendChild(mediaFrame);
