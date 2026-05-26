@@ -345,6 +345,9 @@ a:hover {
   margin-bottom: 8px;
   text-transform: none;
   letter-spacing: 0.02em;
+  text-align: center;
+  align-self: center;
+  width: 100%;
 }
 
 .carousel-item-box {

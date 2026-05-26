@@ -67,7 +67,7 @@ function init() {
 
     const topNote = document.createElement("div");
     topNote.className = "video-top-note";
-    topNote.textContent = "Quality is lower due to video compression";
+    topNote.textContent = "* quality is lower due to video compression";
 
     const box = document.createElement("div");
     box.className = "carousel-item-box";
@@ -250,7 +250,7 @@ function initMobileProjects() {
 
     const mobileNote = document.createElement("div");
     mobileNote.className = "mobile-video-note";
-    mobileNote.textContent = "Quality is lower due to video compression";
+    mobileNote.textContent = "* quality is lower due to video compression";
 
     const projectType = document.createElement("div");
     projectType.className = "mobile-project-type";
