@@ -10,11 +10,18 @@ const projects = [
     num: "01"
   },
   {
+    brand: "# Skit // Gauth AI",
+    type: "Comedic Skit",
+    rightMeta: "Voiceover, Video Dev",
+    videoSrc: "vids/gauth_ad.mp4?v=2",
+    num: "02"
+  },
+  {
     brand: "# Yap // Quizard",
     type: "YAPPING VIDEO",
     rightMeta: "Scripting, Production",
     videoSrc: "vids/Yap Quizard.mp4",
-    num: "02"
+    num: "03"
   },
   {
     brand: "# Brand Name 4",
@@ -27,13 +34,6 @@ const projects = [
     type: "Lifestyle",
     rightMeta: "UGC, Creative Direction",
     num: "05"
-  },
-  {
-    brand: "# Skit // Gauth AI",
-    type: "Comedic Skit",
-    rightMeta: "Voiceover, Video Dev",
-    videoSrc: "vids/gauth_ad.mp4?v=2",
-    num: "06"
   }
 ];
 
