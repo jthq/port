@@ -65,6 +65,10 @@ function init() {
     topTitle.className = "video-top-title";
     topTitle.textContent = `# ${proj.type}`;
 
+    const topNote = document.createElement("div");
+    topNote.className = "video-top-note";
+    topNote.textContent = "Quality is lower due to video compression";
+
     const box = document.createElement("div");
     box.className = "carousel-item-box";
     let controls = null;
@@ -203,6 +207,7 @@ function init() {
     title.textContent = "";
     
     wrapper.appendChild(topTitle);
+    wrapper.appendChild(topNote);
     wrapper.appendChild(box);
     if (controls) wrapper.appendChild(controls);
     wrapper.appendChild(title);
@@ -242,6 +247,10 @@ function initMobileProjects() {
 
     projectHeader.appendChild(projectNum);
     projectHeader.appendChild(projectBrand);
+
+    const mobileNote = document.createElement("div");
+    mobileNote.className = "mobile-video-note";
+    mobileNote.textContent = "Quality is lower due to video compression";
 
     const projectType = document.createElement("div");
     projectType.className = "mobile-project-type";
@@ -310,10 +319,10 @@ function initMobileProjects() {
       video.addEventListener("loadeddata", capturePoster);
 
       mediaFrame.appendChild(video);
+      projectCard.appendChild(projectHeader);
+      projectCard.appendChild(mobileNote);
       projectCard.appendChild(mediaFrame);
     }
-
-    projectCard.appendChild(projectHeader);
     projectCard.appendChild(projectType);
     projectCard.appendChild(projectMeta);
     mobileProjectsListEl.appendChild(projectCard);
