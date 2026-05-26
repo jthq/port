@@ -853,7 +853,7 @@ a:hover {
     width: 100%;
     aspect-ratio: 9 / 16;
     margin: 8px 0 8px;
-    background: #f4f4f4;
+    background: linear-gradient(180deg, #fafafa 0%, #f0f0f0 100%);
     overflow: hidden;
     border: 1px solid #ececec;
   }
@@ -863,11 +863,13 @@ a:hover {
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: grayscale(1) contrast(1.05) brightness(0.95);
+    filter: grayscale(1) contrast(1.03) brightness(0.98);
+    opacity: 0.94;
   }
 
   .mobile-project-card.is-playing .mobile-video-player {
     filter: grayscale(0) contrast(1.02) brightness(1);
+    opacity: 1;
   }
 
   .mobile-video-button {

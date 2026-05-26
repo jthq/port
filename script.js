@@ -305,7 +305,17 @@ function initMobileProjects() {
       };
 
       video.addEventListener("timeupdate", syncProgress);
-      video.addEventListener("loadedmetadata", syncProgress);
+      video.addEventListener("loadedmetadata", () => {
+        syncProgress();
+
+        if (!video.duration || !Number.isFinite(video.duration)) return;
+
+        try {
+          video.currentTime = Math.min(0.15, Math.max(0.02, video.duration * 0.01));
+        } catch (error) {
+          console.error("Mobile preview frame setup failed:", error);
+        }
+      });
       video.addEventListener("play", () => {
         projectCard.classList.add("is-playing");
         videoButton.textContent = "pause";
