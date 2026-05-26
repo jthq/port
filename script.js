@@ -258,87 +258,27 @@ function initMobileProjects() {
       const video = document.createElement("video");
       video.className = "mobile-video-player";
       video.src = proj.videoSrc;
-      video.preload = "metadata";
+      video.preload = "auto";
+      video.autoplay = true;
+      video.muted = true;
+      video.loop = true;
       video.playsInline = true;
-      video.controls = false;
+      video.controls = true;
       video.setAttribute("aria-label", proj.brand);
 
-      const videoButton = document.createElement("button");
-      videoButton.type = "button";
-      videoButton.className = "mobile-video-button";
-      videoButton.textContent = "play";
-      videoButton.setAttribute("aria-label", "Play video");
-
-      const mobileControls = document.createElement("div");
-      mobileControls.className = "mobile-video-controls";
-
-      const mobileProgressTrack = document.createElement("div");
-      mobileProgressTrack.className = "mobile-progress-track";
-      const mobileProgressFill = document.createElement("div");
-      mobileProgressFill.className = "mobile-progress-fill";
-      mobileProgressTrack.appendChild(mobileProgressFill);
-      mobileControls.appendChild(mobileProgressTrack);
-
-      const syncProgress = () => {
-        if (!video.duration) return;
-        const pct = (video.currentTime / video.duration) * 100;
-        mobileProgressFill.style.width = pct + "%";
-      };
-
-      const seekTo = (pct) => {
-        if (!video.duration || !Number.isFinite(video.duration)) return;
-        video.currentTime = Math.max(0, Math.min(1, pct / 100)) * video.duration;
-      };
-
-      const togglePlayback = async (event) => {
-        event.stopPropagation();
-
-        try {
-          if (video.paused) {
-            await video.play();
-          } else {
-            video.pause();
-          }
-        } catch (error) {
-          console.error("Mobile video playback failed:", error);
-        }
-      };
-
-      video.addEventListener("timeupdate", syncProgress);
       video.addEventListener("loadedmetadata", () => {
-        syncProgress();
-
         if (!video.duration || !Number.isFinite(video.duration)) return;
 
         try {
           video.currentTime = Math.min(0.15, Math.max(0.02, video.duration * 0.01));
+          void video.play();
         } catch (error) {
-          console.error("Mobile preview frame setup failed:", error);
+          console.error("Mobile preview setup failed:", error);
         }
-      });
-      video.addEventListener("play", () => {
-        projectCard.classList.add("is-playing");
-        videoButton.textContent = "pause";
-      });
-      video.addEventListener("pause", () => {
-        projectCard.classList.remove("is-playing");
-        videoButton.textContent = "play";
-      });
-
-      videoButton.addEventListener("click", togglePlayback);
-      video.addEventListener("click", togglePlayback);
-
-      mobileProgressTrack.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const rect = mobileProgressTrack.getBoundingClientRect();
-        const x = (event.clientX - rect.left) / rect.width;
-        seekTo(x * 100);
       });
 
       mediaFrame.appendChild(video);
-      mediaFrame.appendChild(videoButton);
       projectCard.appendChild(mediaFrame);
-      projectCard.appendChild(mobileControls);
     }
 
     projectCard.appendChild(projectHeader);
