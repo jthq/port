@@ -11,17 +11,17 @@ const projects = [
     num: "01"
   },
   {
-    brand: "# DMing // Polymarket",
-    type: "DMing 5000 Restaurants",
-    rightMeta: "UGC, Creative Direction",
-    videoSrc: "vids/DMing , Polymarket.mp4",
-    num: "02"
-  },
-  {
     brand: "# Product Demo // Lovable",
     type: "SIDE HUSTLE",
     rightMeta: "Strategy, Production",
     videoSrc: "vids/lovable - product dmeo.mov",
+    num: "02"
+  },
+  {
+    brand: "# DMing // Polymarket",
+    type: "DMing 5000 Restaurants",
+    rightMeta: "UGC, Creative Direction",
+    videoSrc: "vids/DMing , Polymarket.mp4",
     num: "03"
   },
   {
