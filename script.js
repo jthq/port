@@ -44,6 +44,7 @@ let currentIndex = localStorage.getItem('carouselIndex') !== null
   ? parseInt(localStorage.getItem('carouselIndex'), 10) 
   : 0; // Default to the very first brand if never visited before
 let isAnimating = false;
+let carouselStepPx = window.innerHeight;
 const activeVideos = {}; // Stores video elements by index
 const videoPlaybackState = new Map();
 
@@ -54,6 +55,19 @@ const mobileLayoutQuery = window.matchMedia("(max-width: 768px), (max-aspect-rat
 
 function isMobileLayout() {
   return mobileLayoutQuery.matches;
+}
+
+function updateCarouselStep() {
+  if (!carouselTrackEl) return;
+  const children = Array.from(carouselTrackEl.children);
+  if (children.length >= 2) {
+    const firstTop = children[0].offsetTop;
+    const secondTop = children[1].offsetTop;
+    const step = Math.abs(secondTop - firstTop);
+    carouselStepPx = step > 0 ? step : window.innerHeight;
+  } else {
+    carouselStepPx = window.innerHeight;
+  }
 }
 
 // Initialize DOM
@@ -356,6 +370,7 @@ function goToIndex(index, force = false) {
   currentIndex = index;
   localStorage.setItem('carouselIndex', currentIndex);
   isAnimating = true;
+  updateCarouselStep();
 
   if (isWrapForward) {
     // Clone first item and append to the end for continuous scroll
@@ -364,14 +379,14 @@ function goToIndex(index, force = false) {
     carouselTrackEl.appendChild(clone);
     updateClassesAndMeta();
 
-    const shiftAmount = -(projects.length * 100);
+    const shiftAmount = -(projects.length * carouselStepPx);
     carouselTrackEl.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-    carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
+    carouselTrackEl.style.transform = `translateY(${shiftAmount}px)`;
 
     setTimeout(() => {
       carouselTrackEl.removeChild(clone);
       carouselTrackEl.style.transition = 'none';
-      carouselTrackEl.style.transform = `translateY(0vh)`;
+      carouselTrackEl.style.transform = `translateY(0px)`;
       setTimeout(() => { isAnimating = false; }, 50); 
     }, 500);
 
@@ -383,27 +398,27 @@ function goToIndex(index, force = false) {
     
     // Instantly shift track down so view doesn't jump
     carouselTrackEl.style.transition = 'none';
-    carouselTrackEl.style.transform = `translateY(-100vh)`;
+    carouselTrackEl.style.transform = `translateY(${-carouselStepPx}px)`;
     void carouselTrackEl.offsetHeight; // force reflow
 
     updateClassesAndMeta();
 
     carouselTrackEl.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-    carouselTrackEl.style.transform = `translateY(0vh)`;
+    carouselTrackEl.style.transform = `translateY(0px)`;
 
     setTimeout(() => {
       carouselTrackEl.removeChild(clone);
       carouselTrackEl.style.transition = 'none';
-      const realShift = -((projects.length - 1) * 100);
-      carouselTrackEl.style.transform = `translateY(${realShift}vh)`;
+      const realShift = -((projects.length - 1) * carouselStepPx);
+      carouselTrackEl.style.transform = `translateY(${realShift}px)`;
       setTimeout(() => { isAnimating = false; }, 50); 
     }, 500);
 
   } else {
     updateClassesAndMeta();
-    const shiftAmount = -(currentIndex * 100); 
+    const shiftAmount = -(currentIndex * carouselStepPx); 
     carouselTrackEl.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
-    carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
+    carouselTrackEl.style.transform = `translateY(${shiftAmount}px)`;
     setTimeout(() => {
       isAnimating = false;
     }, 550); 
@@ -445,9 +460,10 @@ function restoreCurrentVideoState(idx) {
 function updateDOM() {
   // Only called on init
   updateClassesAndMeta();
+  updateCarouselStep();
   carouselTrackEl.style.transition = 'none';
-  const shiftAmount = -(currentIndex * 100); 
-  carouselTrackEl.style.transform = `translateY(${shiftAmount}vh)`;
+  const shiftAmount = -(currentIndex * carouselStepPx); 
+  carouselTrackEl.style.transform = `translateY(${shiftAmount}px)`;
   void carouselTrackEl.offsetHeight;
 }
 
@@ -611,6 +627,14 @@ document.addEventListener('DOMContentLoaded', () => {
   runLoader();
   init(); // RESTORED init()
   initMobileProjects();
+  updateCarouselStep();
+  window.addEventListener('resize', () => {
+    if (isMobileLayout()) return;
+    updateCarouselStep();
+    carouselTrackEl.style.transition = 'none';
+    const shiftAmount = -(currentIndex * carouselStepPx);
+    carouselTrackEl.style.transform = `translateY(${shiftAmount}px)`;
+  });
   try {
     const createScrollPrompt = () => {
       const bottomText = document.querySelector('.bottom-center');
