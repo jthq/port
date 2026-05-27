@@ -488,6 +488,8 @@ function updateClassesAndMeta() {
 window.addEventListener("wheel", (e) => {
   if (isMobileLayout()) return;
 
+  e.preventDefault();
+
   if (isAnimating) return;
   
   // Trackpad threshold to ignore tiny inertia jitters when lock opens
@@ -498,7 +500,7 @@ window.addEventListener("wheel", (e) => {
   } else if (e.deltaY < 0) {
     goToIndex(currentIndex - 1);
   }
-});
+}, { passive: false });
 
 // Arrow Keys
 window.addEventListener("keydown", (e) => {
