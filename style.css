@@ -652,17 +652,19 @@ a:hover {
 /* ── 7. CORNER ART ────────────────────────────────────────── */
 .corner-art {
   position: absolute;
-  bottom: 2.5vw; /* Shifted slightly up from bottom */
-  left: 3vw;
+  bottom: 1.6vw; /* align with bottom-right email plane */
+  right: 3vw; /* move to same side as the email */
   font-family: monospace;
-  font-size: clamp(3px, 0.5vw, 8px);
+  font-size: clamp(3px, 0.45vw, 8px);
   line-height: 0.8;
   letter-spacing: -0.02em;
-  color: #dcdcdc;
-  z-index: 1;
+  color: rgba(220,220,220,0.45); /* lighter, more subtle */
+  z-index: 9; /* just behind interactive elements like the email */
   pointer-events: none;
   margin: 0;
   white-space: pre;
+  max-width: min(34vw, 420px);
+  text-align: right;
 }
 
 /* ── 8. RESPONSIVE ────────────────────────────────────────── */
