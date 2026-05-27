@@ -7,7 +7,7 @@ const projects = [
     brand: "# Top 3 // Turbo AI",
     type: "Top 3 Websites",
     rightMeta: "Creative Direction, Editing",
-    videoSrc: "vids/Top 3 turbo ai.mp4",
+    videoSrc: "vids/Top 3 Turbo AI.mp4",
     num: "01"
   },
   {
