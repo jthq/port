@@ -4,35 +4,38 @@
 
 const projects = [
   {
-    brand: "# Brand Name 1",
-    type: "UGC Video",
+    brand: "# Top 3 // Turbo AI",
+    type: "Top 3 Websites",
     rightMeta: "Creative Direction, Editing",
+    videoSrc: "vids/Top 3 turbo ai.mp4",
     num: "01"
   },
   {
-    brand: "# Skit // Gauth AI",
-    type: "Comedic Skit",
-    rightMeta: "Voiceover, Video Dev",
-    videoSrc: "vids/gauth_ad.mp4?v=2",
+    brand: "# DMing // Polymarket",
+    type: "DMing 5000 Restaurants",
+    rightMeta: "UGC, Creative Direction",
+    videoSrc: "vids/DMing , Polymarket.mp4",
     num: "02"
+  },
+  {
+    brand: "# Product Demo // Lovable",
+    type: "SIDE HUSTLE",
+    rightMeta: "Strategy, Production",
+    videoSrc: "vids/lovable - product dmeo.mov",
+    num: "03"
   },
   {
     brand: "# Yap // Quizard",
     type: "YAPPING VIDEO",
     rightMeta: "Scripting, Production",
     videoSrc: "vids/Yap Quizard.mp4",
-    num: "03"
-  },
-  {
-    brand: "# Brand Name 4",
-    type: "App Promo",
-    rightMeta: "Strategy, Production",
     num: "04"
   },
   {
-    brand: "# Brand Name 5",
-    type: "Lifestyle",
-    rightMeta: "UGC, Creative Direction",
+    brand: "# Skit // Gauth AI",
+    type: "Comedic Skit",
+    rightMeta: "Voiceover, Video Dev",
+    videoSrc: "vids/gauth_ad.mp4?v=2",
     num: "05"
   }
 ];
@@ -78,7 +81,7 @@ function init() {
 
       const video = document.createElement("video");
       video.className = "video-player";
-      video.src = proj.videoSrc;
+      video.src = encodeURI(proj.videoSrc);
       video.preload = "metadata";
       video.playsInline = true;
       video.controls = false;
@@ -202,15 +205,11 @@ function init() {
       box.appendChild(playButton);
     }
     
-    const title = document.createElement("div");
-    title.className = "video-title";
-    title.textContent = "";
-    
+    // omit per-video small caption (was `video-title`) — kept off per request
     wrapper.appendChild(topTitle);
     wrapper.appendChild(topNote);
     wrapper.appendChild(box);
     if (controls) wrapper.appendChild(controls);
-    wrapper.appendChild(title);
     wrapper.addEventListener("click", () => goToIndex(idx, true));
     carouselTrackEl.appendChild(wrapper);
     
@@ -222,6 +221,7 @@ function init() {
     metaRightEl.appendChild(metaItem);
   });
 
+  // Tiles removed per request — keep original update call
   updateDOM();
 }
 
@@ -266,7 +266,7 @@ function initMobileProjects() {
 
       const video = document.createElement("video");
       video.className = "mobile-video-player";
-      video.src = proj.videoSrc;
+      video.src = encodeURI(proj.videoSrc);
       video.preload = "metadata";
       video.autoplay = false;
       video.muted = true;
@@ -323,8 +323,12 @@ function initMobileProjects() {
       projectCard.appendChild(mobileNote);
       projectCard.appendChild(mediaFrame);
     }
-    projectCard.appendChild(projectType);
-    projectCard.appendChild(projectMeta);
+    // On mobile, when a video exists we keep only the top header (num + brand)
+    // and omit the type and meta lines to reduce visual clutter.
+    if (!proj.videoSrc) {
+      projectCard.appendChild(projectType);
+      projectCard.appendChild(projectMeta);
+    }
     mobileProjectsListEl.appendChild(projectCard);
   });
 }
@@ -471,9 +475,9 @@ function updateClassesAndMeta() {
   }
 
   // Update Meta List
-  Array.from(metaRightEl.children).forEach((el, i) => {
-    el.classList.toggle("active", i === currentIndex);
-  });
+  // Update meta-item active state (sidebar list)
+  const metaItems = Array.from(metaRightEl.querySelectorAll('.meta-item'));
+  metaItems.forEach((el, i) => { el.classList.toggle('active', i === currentIndex); });
 
   if (activeVideos[currentIndex]) {
     restoreCurrentVideoState(currentIndex);
@@ -605,4 +609,46 @@ document.addEventListener('DOMContentLoaded', () => {
   runLoader();
   init(); // RESTORED init()
   initMobileProjects();
+  try {
+    const createScrollPrompt = () => {
+      const bottomText = document.querySelector('.bottom-center');
+      if (!bottomText || document.querySelector('.scroll-prompt')) return;
+
+      const prompt = document.createElement('div');
+      prompt.className = 'scroll-prompt';
+      prompt.setAttribute('aria-hidden', 'true');
+      prompt.innerHTML = `
+        <svg width="100%" viewBox="0 0 680 300" xmlns="http://www.w3.org/2000/svg">
+          <g class="arrow-group" style="transform-origin: 340px 150px;">
+            <polygon class="triangle"
+              points="340,198 300,132 380,132"/>
+          </g>
+        </svg>`;
+
+      bottomText.parentElement.insertBefore(prompt, bottomText);
+
+      const hidePrompt = () => {
+        prompt.classList.add('hidden');
+        window.removeEventListener('scroll', hidePrompt);
+        window.removeEventListener('wheel', hidePrompt);
+        window.removeEventListener('touchstart', hidePrompt);
+        window.removeEventListener('keydown', onKeyDown);
+      };
+
+      const onKeyDown = (e) => {
+        if (['ArrowDown', 'ArrowUp', 'PageDown', 'PageUp', 'Space'].includes(e.key)) {
+          hidePrompt();
+        }
+      };
+
+      window.addEventListener('scroll', hidePrompt, { once: true, passive: true });
+      window.addEventListener('wheel', hidePrompt, { once: true, passive: true });
+      window.addEventListener('touchstart', hidePrompt, { once: true, passive: true });
+      window.addEventListener('keydown', onKeyDown);
+    };
+
+    createScrollPrompt();
+  } catch (e) {
+    console.error('Scroll prompt failed', e);
+  }
 });

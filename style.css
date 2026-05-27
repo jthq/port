@@ -179,8 +179,93 @@ a:hover {
   color: #111111;
 }
 
+/* View buttons for notable videos (fits site theme) */
+.view-buttons {
+  display: flex;
+  gap: 10px; /* slightly tighter gap for even visual weight */
+  align-items: center;
+  margin: 4px 0 8px 0; /* less vertical spacing so buttons sit closer to heading */
+  flex-wrap: wrap;
+}
+
+/* Desktop-only: increase gap between view buttons and the next section (NICHES) */
+@media (min-width: 769px) {
+  .left-about .view-buttons {
+    margin-bottom: 22px; /* visually larger gap for desktop */
+  }
+}
+
+.view-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  min-height: 34px; /* consistent button height */
+  font-size: 13px;
+  font-weight: 700;
+  color: #777777; /* gray */
+  background: transparent;
+  border: 1px solid #ececec;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  line-height: 1;
+}
+
+.view-btn:hover {
+  background: #f6f6f6;
+  border-color: #e0e0e0;
+  color: #111111;
+}
+
+.view-btn .icon {
+  margin-right: 8px;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+/* SVG inside button should inherit color */
+.view-btn svg {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+  color: inherit;
+}
+
+/* Eye icon styling (smaller, sits after the count) */
+.view-btn svg.eye {
+  width: 12px;
+  height: 12px;
+  margin-left: 6px;
+  margin-right: 0;
+}
+}
+
+/* Sub-heading variant used inside about-text to avoid large mt spacing */
+.about-text .sub-heading {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+/* Ensure left-about vertical rhythm is tidy */
+.left-about .about-text > *:not(:first-child) {
+  margin-top: 8px;
+}
+
+/* Paragraphs inside about-text use consistent spacing */
+.about-paragraph {
+  margin: 0;
+  padding: 0;
+}
+
 .corner-email {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: 500;
   text-transform: lowercase;
   color: #cccccc;
@@ -198,7 +283,7 @@ a:hover {
   position: absolute;
   top: 50%;
   left: 3vw;
-  transform: translateY(-70%); /* Shifted further up to balance with bottom corner ascii art */
+  transform: translateY(-50%); /* vertically center the about block */
   width: min(30vw, 360px); /* Gives the about block more breathing room */
   z-index: 10;
 }
@@ -208,7 +293,7 @@ a:hover {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
   color: #111111;
 }
 
@@ -250,14 +335,14 @@ a:hover {
   align-items: flex-start;
   gap: 6px;
   text-align: left;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.1em;
   color: #777;
   z-index: 10;
 }
 
 .meta-item {
-  font-size: 14px;
+  font-size: 16px;
   color: #cccccc;
   font-weight: 500;
   cursor: pointer;
@@ -399,7 +484,7 @@ a:hover {
   padding: 0 8px;
   
   /* Border & background */
-  border: 2.5px solid rgba(255, 255, 255, 0.95);
+  border: 4px solid rgba(255, 255, 255, 0.95);
   background: transparent;
   border-radius: 0;
   
@@ -507,13 +592,55 @@ a:hover {
 /* ── 6. BOTTOM MARGINS (SCROLL INDICATOR) ─────────────────── */
 .bottom-center {
   position: absolute;
-  bottom: calc(3vw - 10px);
+  bottom: 6.4vh;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 15px;
+  font-weight: 700;
   color: #111111;
   letter-spacing: 0.15em;
+  z-index: 12;
+  transition: none;
+}
+
+.scroll-prompt {
+  position: absolute;
+  left: 50%;
+  bottom: 9.6vh;
+  transform: translateX(-50%);
+  z-index: 12;
+  opacity: 1;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.scroll-prompt.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(6px);
+}
+
+.scroll-prompt svg {
+  display: block;
+  width: min(13vw, 118px);
+  height: auto;
+}
+
+.scroll-prompt .arrow-group {
+  transform-origin: 340px 150px;
+  animation: bob 1.4s ease-in-out infinite;
+}
+
+.scroll-prompt .triangle {
+  fill: none;
+  stroke: #111111;
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+@keyframes bob {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(12px); }
 }
 
 /* ── 7. CORNER ART ────────────────────────────────────────── */
@@ -556,7 +683,7 @@ a:hover {
   }
 
   .left-about {
-    top: 58%;
+    top: 50%;
     transform: translateY(-50%);
     width: min(27vw, 340px);
   }
@@ -843,6 +970,13 @@ a:hover {
     font-size: 16px;
     font-weight: 700;
     color: #111111;
+  }
+
+  .mobile-small-title {
+    font-size: 12px;
+    color: #888888;
+    margin-top: 6px;
+    line-height: 1.2;
   }
 
   .mobile-video-note {
