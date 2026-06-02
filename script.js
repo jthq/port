@@ -526,6 +526,41 @@ window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowUp") goToIndex(currentIndex - 1, true);
 });
 
+// Small helper: enable drag-to-scroll for the trusted logos row
+(function(){
+  const container = document.querySelector('.trusted-logos');
+  if (!container) return;
+
+  let isDown = false;
+  let startX = 0;
+  let startScroll = 0;
+
+  container.addEventListener('pointerdown', (e) => {
+    isDown = true;
+    container.classList.add('dragging');
+    startX = e.clientX;
+    startScroll = container.scrollLeft;
+    if (e.pointerId) container.setPointerCapture && container.setPointerCapture(e.pointerId);
+  });
+
+  container.addEventListener('pointermove', (e) => {
+    if (!isDown) return;
+    const x = e.clientX;
+    const walk = (startX - x);
+    container.scrollLeft = startScroll + walk;
+  });
+
+  const endDrag = (e) => {
+    isDown = false;
+    container.classList.remove('dragging');
+    if (e && e.pointerId) container.releasePointerCapture && container.releasePointerCapture(e.pointerId);
+  };
+
+  container.addEventListener('pointerup', endDrag);
+  container.addEventListener('pointercancel', endDrag);
+  container.addEventListener('pointerleave', endDrag);
+})();
+
 // Mobile Touch Swipe Support
 let touchStartY = 0;
 let touchEndY = 0;
