@@ -362,8 +362,8 @@ a:hover {
   height: 32px; /* base visual height for desktop */
   width: auto;
   display: block;
-  opacity: 0.94;
-  filter: saturate(0.9);
+  opacity: 1;
+  filter: none;
   transition: opacity 0.2s ease, filter 0.2s ease;
 }
 
@@ -1358,8 +1358,8 @@ a:hover {
     height: 36px; /* base visual height for mobile */
     width: auto;
     display: block;
-    opacity: 0.94;
-    filter: saturate(0.9);
+    opacity: 1;
+    filter: none;
   }
 
   /* Mobile per-logo optical tweaks */
