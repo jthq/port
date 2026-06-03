@@ -359,7 +359,7 @@ a:hover {
 }
 
 .trusted-logo {
-  height: 32px; /* base visual height for desktop */
+  height: 28px; /* base visual height for desktop */
   width: auto;
   display: block;
   opacity: 1;
@@ -369,14 +369,8 @@ a:hover {
 
 /* Slight size bump and subtle left shift for Cantina to match Lovable visually */
 /* Per-logo optical compensation (only adjust height when necessary) */
-.logo-involio { height: 34px; }
-.logo-cantina { height: 36px; }
-.logo-lovable { height: 32px; }
-
-.trusted-logo[src$="involio.png"] {
-  transform: scale(1.06);
-  transform-origin: left center;
-}
+.logo-cantina { height: 32px; }
+.logo-lovable { height: 28px; }
 
 .trusted-logo:hover {
   opacity: 1;
@@ -1355,7 +1349,7 @@ a:hover {
   }
 
   .mobile-trusted-logo {
-    height: 36px; /* base visual height for mobile */
+    height: 30px; /* base visual height for mobile */
     width: auto;
     display: block;
     opacity: 1;
@@ -1363,14 +1357,8 @@ a:hover {
   }
 
   /* Mobile per-logo optical tweaks */
-  .logo-involio.mobile-trusted-logo, .mobile-trusted-logo.logo-involio { height: 38px; }
-  .logo-cantina.mobile-trusted-logo, .mobile-trusted-logo.logo-cantina { height: 40px; }
-  .logo-lovable.mobile-trusted-logo, .mobile-trusted-logo.logo-lovable { height: 36px; }
-
-  .mobile-trusted-logo[src$="involio.png"] {
-    transform: scale(1.05);
-    transform-origin: left center;
-  }
+  .logo-cantina.mobile-trusted-logo, .mobile-trusted-logo.logo-cantina { height: 34px; }
+  .logo-lovable.mobile-trusted-logo, .mobile-trusted-logo.logo-lovable { height: 30px; }
 
   .mobile-layout,
   .mobile-appbar,
@@ -1542,8 +1530,7 @@ a:hover {
   .mobile-trusted-logos { display:flex; gap: 32px; align-items:center; }
 
   /* Ensure per-logo optical tweaks are applied via classes we added */
-  .logo-lovable { height: 36px; }
-  .logo-involio { height: 38px; }
-  .logo-cantina { height: 40px; }
+  .logo-lovable { height: 30px; }
+  .logo-cantina { height: 34px; }
 
 }
